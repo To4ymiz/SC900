@@ -499,8 +499,15 @@ class MouseStudioApp {
       const txt = document.getElementById('battery-text');
       const fill = document.getElementById('battery-fill');
 
+      if (batt.hasReading === false && !this.controller.isSimulation) {
+        if (txt) txt.textContent = '--%';
+        if (fill) fill.setAttribute('width', '0');
+        return;
+      }
+
+      const bars = batt.bars ?? AulaSC900ProController.computeBatteryBars(batt.percentage);
       if (txt) {
-        txt.textContent = `${batt.percentage}%${batt.isCharging ? ' ⚡' : ''}`;
+        txt.textContent = `${batt.percentage}% (${bars}/5)${batt.isCharging ? ' ⚡' : ''}`;
       }
 
       if (fill) {
@@ -508,9 +515,9 @@ class MouseStudioApp {
         fill.setAttribute('width', width.toString());
         if (batt.isCharging) {
           fill.setAttribute('fill', 'var(--apple-blue)');
-        } else if (batt.percentage <= 20) {
+        } else if (batt.percentage < 20) {
           fill.setAttribute('fill', 'var(--apple-red)');
-        } else if (batt.percentage <= 40) {
+        } else if (batt.percentage < 40) {
           fill.setAttribute('fill', 'var(--apple-orange)');
         } else {
           fill.setAttribute('fill', 'var(--apple-green)');

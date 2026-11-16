@@ -31,3 +31,4 @@ desktop.ini
 
 # Agent & workspace cache
 .agents/
+skills-lock.json
