@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AULA SC900 Pro • Control Center</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: [
+              '-apple-system',
+              'BlinkMacSystemFont',
+              '"SF Pro Text"',
+              '"SF Pro Display"',
+              '"Helvetica Neue"',
+              'Helvetica',
+              'Arial',
+              'sans-serif'
+            ],
+          },
+          colors: {
+            apple: {
+              blue: '#007AFF',
+              green: '#34C759',
+              indigo: '#5856D6',
+              orange: '#FF9500',
+              pink: '#FF2D55',
+              purple: '#AF52DE',
+              red: '#FF3B30',
+              teal: '#5AC8FA',
+              yellow: '#FFCC00',
+              gray: {
+                50: '#FBFBFD',
+                100: '#F5F5F7',
+                200: '#E8E8ED',
+                300: '#D2D2D7',
+                400: '#86868B',
+                500: '#6E6E73',
+                600: '#424245',
+                700: '#323236',
+                800: '#1D1D1F',
+                900: '#161617',
+              }
+            }
+          },
+          boxShadow: {
+            'apple-card': '0 8px 30px rgba(0, 0, 0, 0.06)',
+            'apple-card-dark': '0 12px 36px rgba(0, 0, 0, 0.35)',
+            'window': '0 20px 50px rgba(0, 0, 0, 0.18)',
+            'window-dark': '0 24px 60px rgba(0, 0, 0, 0.55)',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Apple Range Slider */
+    input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: transparent;
+    }
+    input[type=range]:focus {
+      outline: none;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 6px;
+      cursor: pointer;
+      background: linear-gradient(to right, var(--slider-color, #007AFF) 0%, var(--slider-color, #007AFF) var(--slider-percent, 50%), rgba(142, 142, 147, 0.24) var(--slider-percent, 50%), rgba(142, 142, 147, 0.24) 100%);
+      border-radius: 9999px;
+    }
+    .dark input[type=range]::-webkit-slider-runnable-track {
+      background: linear-gradient(to right, var(--slider-color, #0A84FF) 0%, var(--slider-color, #0A84FF) var(--slider-percent, 50%), rgba(255, 255, 255, 0.15) var(--slider-percent, 50%), rgba(255, 255, 255, 0.15) 100%);
+    }
+    input[type=range]::-moz-range-track {
+      width: 100%;
+      height: 6px;
+      cursor: pointer;
+      background: rgba(142, 142, 147, 0.24);
+      border-radius: 9999px;
+    }
+    .dark input[type=range]::-moz-range-track {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    input[type=range]::-moz-range-progress {
+      height: 6px;
+      background: var(--slider-color, #007AFF);
+      border-radius: 9999px;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -7px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25), 0 0 1px rgba(0,0,0,0.2);
+      transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.12s ease;
+    }
+    input[type=range]::-moz-range-thumb {
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25), 0 0 1px rgba(0,0,0,0.2);
+    }
+    input[type=range]::-webkit-slider-thumb:hover,
+    input[type=range]::-moz-range-thumb:hover {
+      transform: scale(1.12);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    }
+    input[type=range]::-webkit-slider-thumb:active,
+    input[type=range]::-moz-range-thumb:active {
+      transform: scale(1.05);
+    }
+
+    /* Subtle macOS glass style */
+    .macos-blur {
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+    }
+
+    /* Custom scrollbar for sidebar & logs */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(150, 150, 150, 0.3);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+  </style>
+</head>
+<body class="h-full bg-apple-gray-100 dark:bg-[#121214] text-apple-gray-800 dark:text-apple-gray-100 antialiased flex items-center justify-center p-3 sm:p-6 transition-colors duration-300 select-none">
+
+  <!-- Main macOS Window Frame -->
+  <div class="w-full max-w-5xl h-[92vh] max-h-[860px] min-h-[640px] flex flex-col rounded-2xl overflow-hidden border border-black/10 dark:border-white/10 macos-blur bg-white/70 dark:bg-[#1C1C1E]/80 shadow-window dark:shadow-window-dark transition-all duration-300">
+    
+    <!-- macOS Title Bar (Unified Header) -->
+    <header class="h-13 min-h-[52px] px-4 border-b border-black/5 dark:border-white/5 flex items-center justify-between bg-white/40 dark:bg-black/20 macos-blur select-none">
+      <div class="flex items-center space-x-4">
+        <!-- Window Traffic Light Buttons -->
+        <div class="flex items-center space-x-2 group">
+          <div class="w-3 h-3 rounded-full bg-[#FF5F56] border border-[#E0443E] flex items-center justify-center cursor-pointer">
+            <span class="opacity-0 group-hover:opacity-100 text-[8px] font-bold text-black/60 leading-none">×</span>
+          </div>
+          <div class="w-3 h-3 rounded-full bg-[#FFBD2E] border border-[#DEA123] flex items-center justify-center cursor-pointer">
+            <span class="opacity-0 group-hover:opacity-100 text-[8px] font-bold text-black/60 leading-none">−</span>
+          </div>
+          <div class="w-3 h-3 rounded-full bg-[#27C93F] border border-[#1AAB29] flex items-center justify-center cursor-pointer">
+            <span class="opacity-0 group-hover:opacity-100 text-[7px] font-bold text-black/60 leading-none">+</span>
+          </div>
+        </div>
+
+        <div class="h-4 w-[1px] bg-black/10 dark:bg-white/10 mx-1 hidden sm:block"></div>
+
+        <!-- Mouse Title & Device Status -->
+        <div class="flex items-center space-x-2">
+          <svg class="w-5 h-5 text-apple-gray-500 dark:text-apple-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 2a7 7 0 00-7 7v6a7 7 0 0014 0V9a7 7 0 00-7-7zm0 0v5" />
+          </svg>
+          <span class="font-semibold text-sm tracking-tight">AULA SC900 Pro</span>
+          <span id="headerConnectionBadge" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20">
+            <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+            Disconnected
+          </span>
+        </div>
+      </div>
+
+      <!-- Action Area: Battery & Hardware Actions -->
+      <div class="flex items-center space-x-3">
+        <!-- Battery Pill -->
+        <div id="batteryContainer" class="flex items-center space-x-2 px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-xs text-apple-gray-600 dark:text-apple-gray-300">
+          <div class="relative flex items-center">
+            <!-- Custom Apple Battery Icon -->
+            <div class="w-6 h-3 rounded-[3px] border border-current p-[1.5px] flex items-center">
+              <div id="batteryFill" class="h-full bg-apple-green rounded-[1px] transition-all duration-500" style="width: 88%;"></div>
+            </div>
+            <div class="w-[2px] h-1.5 bg-current rounded-r-[1px] -ml-[1px]"></div>
+          </div>
+          <span id="batteryPercentage" class="font-medium text-[11px] tabular-nums">88%</span>
+          <span id="chargingIcon" class="hidden text-apple-green">
+            <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20">
+              <path d="M11.3 1.05a1 1 0 00-1.6 0l-7 10A1 1 0 003.5 12.5h5v6a1 1 0 001.7.7l7-10a1 1 0 00-.8-1.7h-5v-6.45z"/>
+            </svg>
+          </span>
+        </div>
+
+        <!-- Dark/Light Theme Toggle -->
+        <button id="themeToggleBtn" title="Toggle Appearance" class="p-1.5 rounded-lg text-apple-gray-500 hover:text-apple-gray-800 dark:hover:text-apple-gray-200 hover:bg-black/5 dark:hover:bg-white/10 transition">
+          <svg id="moonIcon" class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <svg id="sunIcon" class="w-4 h-4 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+
+        <!-- Real-Time Auto Sync Toggle -->
+        <button id="realtimeToggleBtn" title="Toggle Live Real-Time Telemetry Monitor" class="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 transition">
+          <span id="realtimePulseDot" class="w-2 h-2 rounded-full bg-apple-green animate-pulse"></span>
+          <span class="hidden md:inline text-[11px]">Realtime</span>
+        </button>
+
+        <!-- Sync from Mouse Button -->
+        <button id="syncFromMouseBtn" title="Pull & Sync all settings from mouse hardware" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-apple-gray-700 dark:text-apple-gray-200 bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-[0.98] transition border border-black/5 dark:border-white/5">
+          <svg id="syncIconSvg" class="w-3.5 h-3.5 text-apple-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          <span class="hidden sm:inline">Sync from Mouse</span>
+        </button>
+
+        <!-- WebHID Connect Button -->
+        <button id="connectDeviceBtn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-apple-blue hover:bg-blue-600 active:scale-[0.98] transition shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <span id="connectBtnText">Connect Mouse</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Workspace (Split Layout) -->
+    <div class="flex-1 flex overflow-hidden">
+
+      <!-- Navigation Sidebar (macOS style) -->
+      <aside class="w-56 p-3 border-r border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02] flex flex-col justify-between hidden md:flex">
+        <div class="space-y-1">
+          <div class="px-3 py-1.5 text-[11px] font-semibold tracking-wider uppercase text-apple-gray-400">Settings</div>
+          
+          <button class="nav-tab active w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-xs font-medium text-apple-blue bg-apple-blue/10 dark:bg-apple-blue/20 transition" data-target="buttons-section">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+            </svg>
+            <span>Button Mapping</span>
+          </button>
+
+          <button class="nav-tab w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-xs font-medium text-apple-gray-600 dark:text-apple-gray-300 hover:bg-black/5 dark:hover:bg-white/5 transition" data-target="sensor-section">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+            <span>Sensor & DPI</span>
+          </button>
+
+          <button class="nav-tab w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-xs font-medium text-apple-gray-600 dark:text-apple-gray-300 hover:bg-black/5 dark:hover:bg-white/5 transition" data-target="performance-section">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            <span>Performance & Power</span>
+          </button>
+
+          <button class="nav-tab w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-xs font-medium text-apple-gray-600 dark:text-apple-gray-300 hover:bg-black/5 dark:hover:bg-white/5 transition" data-target="lighting-section">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4 4 4 0 014-4c.73 0 1.41.2 2 .54V6a4 4 0 018 0v7.54c.59-.34 1.27-.54 2-.54a4 4 0 014 4 4 4 0 01-4 4H7z" />
+            </svg>
+            <span>Lighting FX</span>
+          </button>
+
+          <button class="nav-tab w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-xs font-medium text-apple-gray-600 dark:text-apple-gray-300 hover:bg-black/5 dark:hover:bg-white/5 transition" data-target="debug-section">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+            </svg>
+            <span>WebHID Inspector</span>
+          </button>
+        </div>
+
+        <!-- Simulation mode indicator / Switch -->
+        <div class="p-2.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-semibold text-apple-gray-500">Live Hardware Sync</span>
+            <div id="syncStatusDot" class="w-2 h-2 rounded-full bg-apple-green animate-pulse"></div>
+          </div>
+          <p class="text-[10px] text-apple-gray-400 leading-relaxed">
+            Directly communicates via WebHID Feature Reports (<span class="font-mono">Usage 0xFF05/0x0004</span>). Runs in Mock Simulation when unplugged.
+          </p>
+          <button id="toggleMockBtn" class="w-full text-left text-[10px] text-apple-blue font-semibold hover:underline">Switch Simulation / Hardware</button>
+        </div>
+      </aside>
+
+      <!-- Scrollable Main Panel -->
+      <main class="flex-1 overflow-y-auto p-4 sm:p-7 space-y-6">
+
+        <!-- Banner for Browser/HID Status -->
+        <div id="statusToast" class="flex items-center justify-between p-3.5 rounded-xl border border-blue-500/20 bg-blue-500/10 text-apple-blue text-xs">
+          <div class="flex items-center space-x-2.5">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span id="toastMessage">Ready for configuration. Click <strong>Connect Mouse</strong> to pair your mouse (PIXART 8K Dongle 0x093A:0x522C).</span>
+          </div>
+          <div class="flex items-center space-x-3 ml-2 flex-shrink-0">
+            <button id="showAllDevicesBtn" class="text-xs font-semibold underline hover:opacity-80" title="Open WebHID prompt with open filter to pick any connected HID device">Show All Devices</button>
+            <button id="dismissToastBtn" class="text-xs font-semibold hover:underline">Dismiss</button>
+          </div>
+        </div>
+
+        <!-- Section: Button Mapping & Mouse Visualizer -->
+        <section id="buttons-section" class="space-y-4">
+          <div class="flex flex-wrap items-baseline justify-between border-b border-black/5 dark:border-white/5 pb-2 gap-2">
+            <div>
+              <div class="flex items-center space-x-2">
+                <h2 class="text-base font-semibold tracking-tight">Button Customization & Layout</h2>
+                <span id="unsavedChangesBadge" class="hidden text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 animate-pulse">Unsaved Changes</span>
+              </div>
+              <p class="text-xs text-apple-gray-500">Interactive hardware button reassignment and rapid mapping (Protocol Cmd 0x06)</p>
+            </div>
+            <div class="flex items-center space-x-2">
+              <button id="discardButtonsBtn" class="hidden items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-apple-gray-600 dark:text-apple-gray-300 bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-[0.98] transition border border-black/5 dark:border-white/5">
+                <span>Discard</span>
+              </button>
+              <button id="resetButtonsBtn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-apple-gray-600 dark:text-apple-gray-300 bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 active:scale-[0.98] transition border border-black/5 dark:border-white/5" title="Reset all 6 buttons to factory default actions">
+                <svg class="w-3.5 h-3.5 text-apple-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                <span>Reset Defaults</span>
+              </button>
+              <button id="applyButtonsBtn" disabled class="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-apple-blue opacity-50 cursor-not-allowed hover:bg-blue-600 active:scale-[0.98] transition shadow-sm">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <span id="applyButtonsBtnText">Apply</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+            <!-- Left: Interactive Apple-Style Mouse Visualizer Card -->
+            <div class="lg:col-span-5 p-5 rounded-2xl bg-white dark:bg-white/[0.04] border border-black/5 dark:border-white/5 shadow-apple-card dark:shadow-apple-card-dark flex flex-col items-center justify-between relative overflow-hidden">
+              <div class="w-full flex justify-between items-center z-10">
+                <span class="text-xs font-semibold text-apple-gray-500">Interactive Visualizer</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-black/5 dark:bg-white/10 text-apple-gray-400">AULA SC900 Pro</span>
+              </div>
+
+              <!-- Interactive Mouse Canvas -->
+              <div class="relative w-[210px] h-[410px] my-3 select-none flex items-center justify-center">
+                <!-- Top-down view mouse graphics from original software -->
+                <img src="./assets/mouse_nr.png" alt="AULA SC900 Pro" class="w-[204px] h-[399px] object-contain drop-shadow-lg transition duration-300 dark:hidden">
+                <img src="./assets/mouse_nr-d.png" alt="AULA SC900 Pro (Dark)" class="w-[204px] h-[399px] object-contain drop-shadow-xl transition duration-300 hidden dark:block">
+
+                <!-- Interactive Pin 1: Left Button -->
+                <button type="button" class="mouse-pin absolute w-6 h-6 rounded-full bg-white dark:bg-apple-gray-800 border-2 border-apple-blue text-apple-blue font-bold text-[11px] shadow-md flex items-center justify-center transition-all duration-200 hover:scale-125 hover:bg-apple-blue hover:text-white cursor-pointer z-20 group/pin" style="top: 22%; left: 24%;" data-btn="1" title="Button 1: Left Click">
+                  <span>1</span>
+                  <div class="pin-tooltip absolute -top-7 px-2 py-0.5 rounded-md bg-black/90 text-white text-[10px] whitespace-nowrap opacity-0 group-hover/pin:opacity-100 transition pointer-events-none shadow z-30">Left Click</div>
+                </button>
+
+                <!-- Interactive Pin 2: Right Button -->
+                <button type="button" class="mouse-pin absolute w-6 h-6 rounded-full bg-white dark:bg-apple-gray-800 border-2 border-apple-blue text-apple-blue font-bold text-[11px] shadow-md flex items-center justify-center transition-all duration-200 hover:scale-125 hover:bg-apple-blue hover:text-white cursor-pointer z-20 group/pin" style="top: 22%; right: 24%;" data-btn="2" title="Button 2: Right Click">
+                  <span>2</span>
+                  <div class="pin-tooltip absolute -top-7 px-2 py-0.5 rounded-md bg-black/90 text-white text-[10px] whitespace-nowrap opacity-0 group-hover/pin:opacity-100 transition pointer-events-none shadow z-30">Right Click</div>
+                </button>
+
+                <!-- Interactive Pin 3: Scroll / Middle Click -->
+                <button type="button" class="mouse-pin absolute w-6 h-6 rounded-full bg-white dark:bg-apple-gray-800 border-2 border-apple-blue text-apple-blue font-bold text-[11px] shadow-md flex items-center justify-center transition-all duration-200 hover:scale-125 hover:bg-apple-blue hover:text-white cursor-pointer z-20 group/pin" style="top: 17%; left: 50%; transform: translateX(-50%);" data-btn="3" title="Button 3: Middle Click">
+                  <span>3</span>
+                  <div class="pin-tooltip absolute -top-7 px-2 py-0.5 rounded-md bg-black/90 text-white text-[10px] whitespace-nowrap opacity-0 group-hover/pin:opacity-100 transition pointer-events-none shadow z-30">Middle Click</div>
+                </button>
+
+                <!-- Interactive Pin 4: Forward Button (Front Side) -->
+                <button type="button" class="mouse-pin absolute w-6 h-6 rounded-full bg-white dark:bg-apple-gray-800 border-2 border-apple-blue text-apple-blue font-bold text-[11px] shadow-md flex items-center justify-center transition-all duration-200 hover:scale-125 hover:bg-apple-blue hover:text-white cursor-pointer z-20 group/pin" style="top: 38%; left: 4%;" data-btn="4" title="Button 4: Forward">
+                  <span>4</span>
+                  <div class="pin-tooltip absolute -left-16 px-2 py-0.5 rounded-md bg-black/90 text-white text-[10px] whitespace-nowrap opacity-0 group-hover/pin:opacity-100 transition pointer-events-none shadow z-30">Forward</div>
+                </button>
+
+                <!-- Interactive Pin 5: Backward Button (Rear Side) -->
+                <button type="button" class="mouse-pin absolute w-6 h-6 rounded-full bg-white dark:bg-apple-gray-800 border-2 border-apple-blue text-apple-blue font-bold text-[11px] shadow-md flex items-center justify-center transition-all duration-200 hover:scale-125 hover:bg-apple-blue hover:text-white cursor-pointer z-20 group/pin" style="top: 50%; left: 4%;" data-btn="5" title="Button 5: Backward">
+                  <span>5</span>
+                  <div class="pin-tooltip absolute -left-16 px-2 py-0.5 rounded-md bg-black/90 text-white text-[10px] whitespace-nowrap opacity-0 group-hover/pin:opacity-100 transition pointer-events-none shadow z-30">Backward</div>
+                </button>
+
+                <!-- Interactive Pin 6: DPI Loop Button -->
+                <button type="button" class="mouse-pin absolute w-6 h-6 rounded-full bg-white dark:bg-apple-gray-800 border-2 border-apple-blue text-apple-blue font-bold text-[11px] shadow-md flex items-center justify-center transition-all duration-200 hover:scale-125 hover:bg-apple-blue hover:text-white cursor-pointer z-20 group/pin" style="top: 35%; left: 50%; transform: translateX(-50%);" data-btn="6" title="Button 6: DPI Loop">
+                  <span>6</span>
+                  <div class="pin-tooltip absolute -bottom-7 px-2 py-0.5 rounded-md bg-black/90 text-white text-[10px] whitespace-nowrap opacity-0 group-hover/pin:opacity-100 transition pointer-events-none shadow z-30">DPI Loop</div>
+                </button>
+              </div>
+
+              <div class="text-[11px] text-apple-gray-400 text-center z-10">
+                Click numbered pins or select actions to rebind keys.
+              </div>
+            </div>
+
+            <!-- Right: Apple-Style Button Mapping Controls -->
+            <div class="lg:col-span-7 p-5 rounded-2xl bg-white dark:bg-white/[0.04] border border-black/5 dark:border-white/5 shadow-apple-card dark:shadow-apple-card-dark space-y-3.5 flex flex-col justify-between">
+              <div class="space-y-3.5">
+                <div class="flex justify-between items-center pb-2 border-b border-black/5 dark:border-white/5">
+                  <span class="text-xs font-semibold text-apple-gray-500">Key Assignments</span>
+                  <span class="text-[11px] text-apple-gray-400 font-mono">6 Programmable Switches</span>
+                </div>
+
+                <div class="space-y-2.5" id="buttonMappingList">
+                  <!-- Dynamically generated 6 button configuration rows -->
+                </div>
+              </div>
+
+              <!-- Bottom Apply Strip -->
+              <div class="pt-3 border-t border-black/5 dark:border-white/5 flex items-center justify-between">
+                <div class="text-[11px]">
+                  <span id="mappingStatusText" class="text-apple-gray-400">All mappings synchronized with mouse hardware.</span>
+                </div>
+                <button id="cardApplyButtonsBtn" disabled class="flex items-center space-x-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold text-white bg-apple-blue opacity-50 cursor-not-allowed hover:bg-blue-600 active:scale-[0.98] transition shadow-sm">
+                  <span>Apply</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: DPI & Sensor Settings -->
+        <section id="sensor-section" class="space-y-4">
+          <div class="flex items-baseline justify-between border-b border-black/5 dark:border-white/5 pb-2">
+            <div>
+              <h2 class="text-base font-semibold tracking-tight">Sensor & DPI Presets</h2>
+              <p class="text-xs text-apple-gray-500">PAW3395 Optical Sensor • 50 - 26,000 DPI (50-DPI steps)</p>
+            </div>
+            <div class="text-xs font-medium text-apple-blue flex items-center gap-1">
+              <span>Active:</span>
+              <span id="activeDpiLabel" class="font-bold tabular-nums">1,600 DPI</span>
+            </div>
+          </div>
+
+          <!-- Apple-Style Card for DPI Stages -->
+          <div class="p-5 rounded-2xl bg-white dark:bg-white/[0.04] border border-black/5 dark:border-white/5 shadow-apple-card dark:shadow-apple-card-dark space-y-6">
+            
+            <!-- DPI Segmented Stage Selectors -->
+            <div>
+              <label class="block text-xs font-semibold mb-2.5 text-apple-gray-500">DPI Profile Stage (Click to select Active Stage)</label>
+              <div class="grid grid-cols-2 sm:grid-cols-6 gap-2" id="dpiStageGrid">
+                <!-- Dynamically generated DPI Profile buttons -->
+              </div>
+            </div>
+
+            <!-- DPI Slider Control -->
+            <div class="space-y-3 pt-2">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-medium text-apple-gray-600 dark:text-apple-gray-300" id="stageSliderTitle">Resolution Fine-Tuning (Stage 3)</span>
+                <div class="flex items-center space-x-1.5">
+                  <input type="number" id="dpiNumberInput" min="50" max="26000" step="50" value="1600" class="w-20 px-2 py-1 text-right text-xs font-semibold tabular-nums rounded-lg bg-black/5 dark:bg-white/10 border border-black/10 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-apple-blue">
+                  <span class="text-apple-gray-400">DPI</span>
+                </div>
+              </div>
+              <div class="relative">
+                <input type="range" id="dpiSlider" min="0" max="600" step="0.1" value="300" class="w-full">
+                <!-- DPI Non-linear Scale Ticks & Markers (Aligned directly with slider thumb) -->
+                <div class="flex justify-between text-[10px] text-apple-gray-400 font-mono mt-1.5 select-none px-[10px]">
+                  <button type="button" class="dpi-scale-step w-0 flex flex-col items-center overflow-visible group hover:text-apple-blue dark:hover:text-apple-blue transition cursor-pointer" data-dpi="50" title="Click to set 50 DPI">
+                    <span class="w-0.5 h-1.5 bg-black/20 dark:bg-white/25 group-hover:bg-apple-blue mb-1 rounded-full transition-colors"></span>
+                    <span class="whitespace-nowrap">50</span>
+                  </button>
+                  <button type="button" class="dpi-scale-step w-0 flex flex-col items-center overflow-visible group hover:text-apple-blue dark:hover:text-apple-blue transition cursor-pointer" data-dpi="400" title="Click to set 400 DPI">
+                    <span class="w-0.5 h-1.5 bg-black/20 dark:bg-white/25 group-hover:bg-apple-blue mb-1 rounded-full transition-colors"></span>
+                    <span class="whitespace-nowrap">400</span>
+                  </button>
+                  <button type="button" class="dpi-scale-step w-0 flex flex-col items-center overflow-visible group hover:text-apple-blue dark:hover:text-apple-blue transition cursor-pointer" data-dpi="800" title="Click to set 800 DPI">
+                    <span class="w-0.5 h-1.5 bg-black/20 dark:bg-white/25 group-hover:bg-apple-blue mb-1 rounded-full transition-colors"></span>
+                    <span class="whitespace-nowrap">800</span>
+                  </button>
+                  <button type="button" class="dpi-scale-step w-0 flex flex-col items-center overflow-visible group hover:text-apple-blue dark:hover:text-apple-blue transition cursor-pointer" data-dpi="1600" title="Click to set 1,600 DPI">
+                    <span class="w-0.5 h-1.5 bg-black/20 dark:bg-white/25 group-hover:bg-apple-blue mb-1 rounded-full transition-colors"></span>
+                    <span class="whitespace-nowrap font-medium">1600</span>
+                  </button>
+                  <button type="button" class="dpi-scale-step w-0 flex flex-col items-center overflow-visible group hover:text-apple-blue dark:hover:text-apple-blue transition cursor-pointer" data-dpi="3200" title="Click to set 3,200 DPI">
+                    <span class="w-0.5 h-1.5 bg-black/20 dark:bg-white/25 group-hover:bg-apple-blue mb-1 rounded-full transition-colors"></span>
+                    <span class="whitespace-nowrap">3200</span>
+                  </button>
+                  <button type="button" class="dpi-scale-step w-0 flex flex-col items-center overflow-visible group hover:text-apple-blue dark:hover:text-apple-blue transition cursor-pointer" data-dpi="6400" title="Click to set 6,400 DPI">
+                    <span class="w-0.5 h-1.5 bg-black/20 dark:bg-white/25 group-hover:bg-apple-blue mb-1 rounded-full transition-colors"></span>
+                    <span class="whitespace-nowrap">6400</span>
+                  </button>
+                  <button type="button" class="dpi-scale-step w-0 flex flex-col items-center overflow-visible group hover:text-apple-blue dark:hover:text-apple-blue transition cursor-pointer" data-dpi="26000" title="Click to set 26,000 DPI">
+                    <span class="w-0.5 h-1.5 bg-black/20 dark:bg-white/25 group-hover:bg-apple-blue mb-1 rounded-full transition-colors"></span>
+                    <span class="whitespace-nowrap">26000</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Independent X/Y Axis Toggle -->
+            <div class="pt-3 border-t border-black/5 dark:border-white/5 flex items-center justify-between">
+              <div>
+                <span class="text-xs font-medium">Independent X / Y DPI Axis</span>
+                <p class="text-[11px] text-apple-gray-400">Calibrate horizontal and vertical sensitivities separately</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="xyDpiToggle" class="sr-only peer">
+                <div class="w-11 h-6 bg-apple-gray-200 peer-focus:outline-none rounded-full peer dark:bg-white/20 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-apple-blue"></div>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Performance & Polling Rates -->
+        <section id="performance-section" class="space-y-4">
+          <div class="border-b border-black/5 dark:border-white/5 pb-2">
+            <h2 class="text-base font-semibold tracking-tight">Performance & Responsiveness</h2>
+            <p class="text-xs text-apple-gray-500">Ultra-low Latency 8,000 Hz Polling & Switch Debounce Filtering</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            
+            <!-- Polling Rate Card -->
+            <div class="p-5 rounded-2xl bg-white dark:bg-white/[0.04] border border-black/5 dark:border-white/5 shadow-apple-card dark:shadow-apple-card-dark space-y-4 flex flex-col justify-between">
+              <div>
+                <div class="flex justify-between items-center">
+                  <span class="text-xs font-semibold text-apple-gray-500">Polling Rate</span>
+                  <span id="activeHzBadge" class="text-xs font-bold text-apple-blue px-2 py-0.5 rounded-full bg-apple-blue/10">1000 Hz (1ms)</span>
+                </div>
+                <p class="text-[11px] text-apple-gray-400 mt-1">High polling rates deliver ultra-smooth cursor tracking and minimal latency.</p>
+              </div>
+
+              <!-- Segmented Picker (iOS style) -->
+              <div class="p-1 rounded-xl bg-black/5 dark:bg-white/5 grid grid-cols-4 sm:grid-cols-7 gap-1 text-[11px] font-medium" id="pollingGrid">
+                <button data-rate="125" class="py-1.5 rounded-lg text-center transition hover:text-black dark:hover:text-white">125</button>
+                <button data-rate="250" class="py-1.5 rounded-lg text-center transition hover:text-black dark:hover:text-white">250</button>
+                <button data-rate="500" class="py-1.5 rounded-lg text-center transition hover:text-black dark:hover:text-white">500</button>
+                <button data-rate="1000" class="py-1.5 rounded-lg text-center transition bg-white dark:bg-white/20 shadow-sm text-apple-blue dark:text-white font-semibold ring-1 ring-apple-blue/50">1K</button>
+                <button data-rate="2000" class="py-1.5 rounded-lg text-center transition hover:text-black dark:hover:text-white">2K</button>
+                <button data-rate="4000" class="py-1.5 rounded-lg text-center transition hover:text-black dark:hover:text-white">4K</button>
+                <button data-rate="8000" class="py-1.5 rounded-lg text-center transition hover:text-black dark:hover:text-white font-bold text-apple-orange">8K PRO</button>
+              </div>
+            </div>
+
+            <!-- Debounce Delay Card -->
+            <div class="p-5 rounded-2xl bg-white dark:bg-white/[0.04] border border-black/5 dark:border-white/5 shadow-apple-card dark:shadow-apple-card-dark space-y-4 flex flex-col justify-between">
+              <div>
+                <div class="flex justify-between items-center text-xs">
+                  <span class="font-semibold text-apple-gray-500">Key Debounce Time</span>
+                  <span id="debounceLabel" class="font-bold text-apple-blue">8 ms (Recommended)</span>
+                </div>
+                <p class="text-[11px] text-apple-gray-400 mt-1">Anti-double-click buffer algorithm. Lower values offer faster trigger latency.</p>
+              </div>
+
+              <div class="space-y-2">
+                <input type="range" id="debounceSlider" min="0" max="30" step="1" value="8" class="w-full">
+                <div class="relative w-full h-4 text-[10px] text-apple-gray-400 font-mono select-none px-[10px]">
+                  <button type="button" class="debounce-scale-step absolute left-[10px] -translate-x-1/2 flex flex-col items-center hover:text-apple-blue transition cursor-pointer" data-ms="0" title="Click to set 0ms">
+                    <span class="w-0.5 h-1.5 bg-black/20 dark:bg-white/25 mb-0.5 rounded-full"></span>
+                    <span class="whitespace-nowrap">0ms (Min)</span>
+                  </button>
+                  <button type="button" class="debounce-scale-step absolute -translate-x-1/2 flex flex-col items-center hover:text-apple-blue transition cursor-pointer text-apple-blue font-semibold" style="left: calc(10px + (100% - 20px) * (8 / 30))" data-ms="8" title="Click to set 8ms (Recommended)">
+                    <span class="w-0.5 h-1.5 bg-apple-blue mb-0.5 rounded-full"></span>
+                    <span class="whitespace-nowrap">8ms (Recommended)</span>
+                  </button>
+                  <button type="button" class="debounce-scale-step absolute right-[10px] translate-x-1/2 flex flex-col items-center hover:text-apple-blue transition cursor-pointer" data-ms="30" title="Click to set 30ms">
+                    <span class="w-0.5 h-1.5 bg-black/20 dark:bg-white/25 mb-0.5 rounded-full"></span>
+                    <span class="whitespace-nowrap">30ms (Max)</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dormancy & Auto Sleep Card -->
+            <div class="p-5 rounded-2xl bg-white dark:bg-white/[0.04] border border-black/5 dark:border-white/5 shadow-apple-card dark:shadow-apple-card-dark space-y-4 flex flex-col justify-between md:col-span-2 lg:col-span-1">
+              <div>
+                <div class="flex justify-between items-center text-xs">
+                  <span class="font-semibold text-apple-gray-500">Dormancy Time (Auto Sleep)</span>
+                  <span id="sleepTimeBadge" class="font-bold text-apple-blue px-2 py-0.5 rounded-full bg-apple-blue/10">1 Min (60s)</span>
+                </div>
+                <p class="text-[11px] text-apple-gray-400 mt-1">Standby timeout before entering sleep mode to conserve battery (Cmd 0x09/0x02).</p>
+              </div>
+
+              <!-- Quick Presets (Segmented control) -->
+              <div class="p-1 rounded-xl bg-black/5 dark:bg-white/5 grid grid-cols-6 gap-1 text-[11px] font-medium" id="sleepPresetGrid">
+                <button type="button" data-sec="30" class="sleep-preset-btn py-1 rounded-lg text-center transition hover:text-black dark:hover:text-white">30s</button>
+                <button type="button" data-sec="60" class="sleep-preset-btn py-1 rounded-lg text-center transition bg-white dark:bg-white/20 shadow-sm text-apple-blue dark:text-white font-semibold ring-1 ring-apple-blue/50">1m</button>
+                <button type="button" data-sec="120" class="sleep-preset-btn py-1 rounded-lg text-center transition hover:text-black dark:hover:text-white">2m</button>
+                <button type="button" data-sec="300" class="sleep-preset-btn py-1 rounded-lg text-center transition hover:text-black dark:hover:text-white">5m</button>
+                <button type="button" data-sec="600" class="sleep-preset-btn py-1 rounded-lg text-center transition hover:text-black dark:hover:text-white">10m</button>
+                <button type="button" data-sec="1800" class="sleep-preset-btn py-1 rounded-lg text-center transition hover:text-black dark:hover:text-white">30m</button>
+              </div>
+
+              <!-- Dormancy Range Slider -->
+              <div class="space-y-2">
+                <input type="range" id="sleepSlider" min="0" max="500" step="1" value="100" class="w-full">
+                <div class="flex justify-between text-[10px] text-apple-gray-400 font-mono select-none px-[10px]">
+                  <button type="button" class="sleep-scale-step w-0 flex flex-col items-center overflow-visible group hover:text-apple-blue transition cursor-pointer" data-sec="30">
+                    <span class="w-0.5 h-1.5 bg-black/20 dark:bg-white/25 group-hover:bg-apple-blue mb-0.5 rounded-full"></span>
+                    <span class="whitespace-nowrap">30s</span>
+                  </button>
+                  <button type="button" class="sleep-scale-step w-0 flex flex-col items-center overflow-visible group hover:text-apple-blue transition cursor-pointer font-medium" data-sec="60">
+                    <span class="w-0.5 h-1.5 bg-black/20 dark:bg-white/25 group-hover:bg-apple-blue mb-0.5 rounded-full"></span>
+                    <span class="whitespace-nowrap">1m</span>
+                  </button>
+                  <button type="button" class="sleep-scale-step w-0 flex flex-col items-center overflow-visible group hover:text-apple-blue transition cursor-pointer" data-sec="120">
+                    <span class="w-0.5 h-1.5 bg-black/20 dark:bg-white/25 group-hover:bg-apple-blue mb-0.5 rounded-full"></span>
+                    <span class="whitespace-nowrap">2m</span>
+                  </button>
+                  <button type="button" class="sleep-scale-step w-0 flex flex-col items-center overflow-visible group hover:text-apple-blue transition cursor-pointer" data-sec="300">
+                    <span class="w-0.5 h-1.5 bg-black/20 dark:bg-white/25 group-hover:bg-apple-blue mb-0.5 rounded-full"></span>
+                    <span class="whitespace-nowrap">5m</span>
+                  </button>
+                  <button type="button" class="sleep-scale-step w-0 flex flex-col items-center overflow-visible group hover:text-apple-blue transition cursor-pointer" data-sec="600">
+                    <span class="w-0.5 h-1.5 bg-black/20 dark:bg-white/25 group-hover:bg-apple-blue mb-0.5 rounded-full"></span>
+                    <span class="whitespace-nowrap">10m</span>
+                  </button>
+                  <button type="button" class="sleep-scale-step w-0 flex flex-col items-center overflow-visible group hover:text-apple-blue transition cursor-pointer" data-sec="1800">
+                    <span class="w-0.5 h-1.5 bg-black/20 dark:bg-white/25 group-hover:bg-apple-blue mb-0.5 rounded-full"></span>
+                    <span class="whitespace-nowrap">30m</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Section: RGB Lighting FX -->
+        <section id="lighting-section" class="space-y-4">
+          <div class="border-b border-black/5 dark:border-white/5 pb-2">
+            <h2 class="text-base font-semibold tracking-tight">RGB Backlight & Atmosphere</h2>
+            <p class="text-xs text-apple-gray-500">Select lighting patterns and LED brightness levels (Protocol Cmd 0x0B)</p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-white dark:bg-white/[0.04] border border-black/5 dark:border-white/5 shadow-apple-card dark:shadow-apple-card-dark space-y-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              
+              <!-- Lighting Mode Selector -->
+              <div>
+                <label class="block text-xs font-semibold mb-2 text-apple-gray-500">Main Illumination Mode</label>
+                <select id="rgbEffectSelect" class="w-full p-2.5 rounded-xl bg-black/5 dark:bg-white/10 border border-black/10 dark:border-white/10 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-apple-blue">
+                  <option value="5" selected>Ambilight (Rainbow Wave)</option>
+                  <option value="4">Flow Water (Neon Stream)</option>
+                  <option value="2">Battery Status Indicator</option>
+                  <option value="3">Connection & Polling Pulse</option>
+                  <option value="1">Battery Warning Alert Only</option>
+                  <option value="0">LED Off (Power Saver)</option>
+                </select>
+              </div>
+
+              <!-- DPI LED Effect -->
+              <div>
+                <label class="block text-xs font-semibold mb-2 text-apple-gray-500">DPI Indicator LED Effect</label>
+                <select id="dpiLedEffectSelect" class="w-full p-2.5 rounded-xl bg-black/5 dark:bg-white/10 border border-black/10 dark:border-white/10 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-apple-blue">
+                  <option value="0" selected>Steady Glow</option>
+                  <option value="1">Breathing Cycle</option>
+                  <option value="2">Off</option>
+                </select>
+              </div>
+
+            </div>
+
+            <!-- Brightness Slider -->
+            <div class="pt-3 border-t border-black/5 dark:border-white/5 space-y-2">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-medium text-apple-gray-600 dark:text-apple-gray-300">LED Brightness Level</span>
+                <span id="brightnessLabel" class="font-bold tabular-nums">Level 2 (Medium)</span>
+              </div>
+              <input type="range" id="brightnessSlider" min="0" max="2" step="1" value="1" class="w-full">
+              <div class="flex justify-between text-[10px] text-apple-gray-400 font-mono mt-1.5 select-none px-[10px]">
+                <button type="button" class="bright-scale-step w-0 flex flex-col items-center overflow-visible group hover:text-apple-blue transition cursor-pointer" data-val="0">
+                  <span class="w-0.5 h-1.5 bg-black/20 dark:bg-white/25 group-hover:bg-apple-blue mb-0.5 rounded-full"></span>
+                  <span class="whitespace-nowrap">Level 1 (Low)</span>
+                </button>
+                <button type="button" class="bright-scale-step w-0 flex flex-col items-center overflow-visible group hover:text-apple-blue transition cursor-pointer font-medium" data-val="1">
+                  <span class="w-0.5 h-1.5 bg-black/20 dark:bg-white/25 group-hover:bg-apple-blue mb-0.5 rounded-full"></span>
+                  <span class="whitespace-nowrap">Level 2 (Normal)</span>
+                </button>
+                <button type="button" class="bright-scale-step w-0 flex flex-col items-center overflow-visible group hover:text-apple-blue transition cursor-pointer" data-val="2">
+                  <span class="w-0.5 h-1.5 bg-black/20 dark:bg-white/25 group-hover:bg-apple-blue mb-0.5 rounded-full"></span>
+                  <span class="whitespace-nowrap">Level 3 (High)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: WebHID Debug / Console Log -->
+        <section id="debug-section" class="space-y-4">
+          <div class="border-b border-black/5 dark:border-white/5 pb-2 flex justify-between items-center">
+            <div>
+              <h2 class="text-base font-semibold tracking-tight">WebHID Packet Telemetry Inspector</h2>
+              <p class="text-xs text-apple-gray-500">Live hex trace of Feature Reports sent to USB HID vendor interface (UsagePage 0xFF05 / Usage 0x0004)</p>
+            </div>
+            <button id="clearLogBtn" class="text-xs text-apple-gray-400 hover:text-apple-gray-700 dark:hover:text-apple-gray-200">Clear Log</button>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-black/90 text-emerald-400 font-mono text-[11px] leading-relaxed h-44 overflow-y-auto border border-black/10 dark:border-white/10 shadow-inner" id="packetLogBox">
+            <div class="text-apple-gray-500">// Ready. WebHID Controller initialized with AULA SC900 Pro vendor interface.</div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- macOS Status Footer -->
+    <footer class="h-8 min-h-[32px] px-4 bg-white/40 dark:bg-black/20 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[11px] text-apple-gray-500">
+      <div class="flex items-center space-x-3">
+        <span id="footerConnectionState">Mode: Interactive Simulation (Demo)</span>
+        <span>•</span>
+        <span>Vendor ID: <span id="footerVid" class="font-mono text-apple-gray-700 dark:text-apple-gray-300">0x093A</span></span>
+        <span>•</span>
+        <span>Product ID: <span id="footerPid" class="font-mono text-apple-gray-700 dark:text-apple-gray-300">0x522C (8K Dongle)</span></span>
+        <span>•</span>
+        <span>Target Interface: <span class="font-mono text-apple-gray-700 dark:text-apple-gray-300">Usage 0xFF05 / 0x0004</span></span>
+      </div>
+      <div>AULA SC900 Pro WebHID Engine v2.0</div>
+    </footer>
+  </div>
+
+  <!-- Client-Side WebHID Logic & Hardware Protocol -->
+  <script type="module">
+    import {
+      AulaSC900ProController,
+      PollingRate,
+      LightingEffect,
+      DpiLedEffect,
+      ButtonAction,
+      ButtonActionLabels,
+      MouseButton
+    } from './src/AulaSC900ProController.ts';
+
+    // --- State & Profiles Management ---
+    const dpiPresets = [
+      { stage: 1, dpi: 400, color: '#FF3B30' },
+      { stage: 2, dpi: 800, color: '#FF9500' },
+      { stage: 3, dpi: 1600, color: '#007AFF' },
+      { stage: 4, dpi: 3200, color: '#34C759' },
+      { stage: 5, dpi: 6400, color: '#AF52DE' },
+      { stage: 6, dpi: 26000, color: '#5AC8FA' }
+    ];
+
+    let currentStageIndex = 2; // Default 1600 DPI (Stage 3)
+    let controller = new AulaSC900ProController();
+    let currentPollingRate = PollingRate.Rate1000Hz;
+    let currentLightEffect = LightingEffect.Ambilight;
+    let currentDpiLedEffect = DpiLedEffect.Steady;
+    let currentBrightness = 1;
+    let currentDebounce = 8;
+    let currentSleepSeconds = 60;
+
+    const STORAGE_KEY_BUTTONS = 'sc900_button_mappings_v3';
+    const DEFAULT_BUTTON_MAPPINGS = {
+      1: ButtonAction.LeftClick,
+      2: ButtonAction.RightClick,
+      3: ButtonAction.MiddleClick,
+      4: ButtonAction.Forward,
+      5: ButtonAction.Backward,
+      6: ButtonAction.DpiLoop
+    };
+
+    function loadSavedButtonMappings() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY_BUTTONS);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed && typeof parsed === 'object') {
+            const result = { ...DEFAULT_BUTTON_MAPPINGS };
+            for (let i = 1; i <= 6; i++) {
+              if (typeof parsed[i] === 'number') {
+                result[i] = parsed[i];
+              }
+            }
+            return result;
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to load button mappings from storage:', e);
+      }
+      return { ...DEFAULT_BUTTON_MAPPINGS };
+    }
+
+    let savedButtonMappings = loadSavedButtonMappings();
+    let draftButtonMappings = { ...savedButtonMappings };
+
+    const buttonMetadata = [
+      { id: 1, name: 'Button 1: Left Click', role: 'Primary Mouse Click (Left Button)', pinSelector: '[data-btn="1"]' },
+      { id: 2, name: 'Button 2: Right Click', role: 'Secondary Menu Click (Right Button)', pinSelector: '[data-btn="2"]' },
+      { id: 3, name: 'Button 3: Middle Click', role: 'Scroll Wheel Click & Middle Button', pinSelector: '[data-btn="3"]' },
+      { id: 4, name: 'Button 4: Forward Button', role: 'Thumb Front Button (Browser Forward)', pinSelector: '[data-btn="4"]' },
+      { id: 5, name: 'Button 5: Backward Button', role: 'Thumb Rear Button (Browser Backward)', pinSelector: '[data-btn="5"]' },
+      { id: 6, name: 'Button 6: DPI Loop Button', role: 'Top Cycle Sensitivity Switch (DPI Loop)', pinSelector: '[data-btn="6"]' },
+    ];
+
+    // --- Scale Slider Conversions & Helpers ---
+    // Physical scale points: 50 -> 400 -> 800 -> 1600 -> 3200 -> 6400 -> 26000
+    // Maps each interval to 100 units on the 0-600 slider track
+    const DPI_SCALE_POINTS = [50, 400, 800, 1600, 3200, 6400, 26000];
+
+    // Dormancy Time Scale: 30s -> 60s (1m) -> 120s (2m) -> 300s (5m) -> 600s (10m) -> 1800s (30m)
+    const SLEEP_SCALE_POINTS = [30, 60, 120, 300, 600, 1800];
+
+    function sliderPosToSleepSeconds(val) {
+      val = Math.max(0, Math.min(500, Number(val)));
+      const segment = Math.min(4, Math.floor(val / 100));
+      const fraction = (val - segment * 100) / 100;
+      const startSec = SLEEP_SCALE_POINTS[segment];
+      const endSec = SLEEP_SCALE_POINTS[segment + 1];
+      let sec = Math.round(startSec + fraction * (endSec - startSec));
+      if (sec < 60) sec = Math.round(sec / 5) * 5;
+      else if (sec < 300) sec = Math.round(sec / 10) * 10;
+      else sec = Math.round(sec / 30) * 30;
+      return Math.max(30, Math.min(1800, sec));
+    }
+
+    function sleepSecondsToSliderPos(sec) {
+      sec = Math.max(30, Math.min(1800, Number(sec)));
+      for (let i = 0; i < SLEEP_SCALE_POINTS.length - 1; i++) {
+        const start = SLEEP_SCALE_POINTS[i];
+        const end = SLEEP_SCALE_POINTS[i + 1];
+        if (sec <= end) {
+          const fraction = (sec - start) / (end - start);
+          return Math.round((i + fraction) * 100);
+        }
+      }
+      return 500;
+    }
+
+    function formatSleepSeconds(sec) {
+      if (sec < 60) return `${sec}s`;
+      const m = Math.floor(sec / 60);
+      const rem = sec % 60;
+      if (rem === 0) return `${m} Min${m > 1 ? 's' : ''} (${sec}s)`;
+      return `${m}m ${rem}s (${sec}s)`;
+    }
+
+    function sliderPosToDpi(val) {
+      val = Math.max(0, Math.min(600, Number(val)));
+      if (val <= 0) return 50;
+      if (val >= 600) return 26000;
+      const segment = Math.min(5, Math.floor(val / 100));
+      const fraction = (val - segment * 100) / 100;
+      const startDpi = DPI_SCALE_POINTS[segment];
+      const endDpi = DPI_SCALE_POINTS[segment + 1];
+      let dpi = startDpi + fraction * (endDpi - startDpi);
+      // Round to hardware 50 DPI resolution step
+      dpi = Math.round(dpi / 50) * 50;
+      return Math.max(50, Math.min(26000, dpi));
+    }
+
+    function dpiToSliderPos(dpi) {
+      dpi = Math.max(50, Math.min(26000, Number(dpi)));
+      for (let i = 0; i < DPI_SCALE_POINTS.length - 1; i++) {
+        const start = DPI_SCALE_POINTS[i];
+        const end = DPI_SCALE_POINTS[i + 1];
+        if (dpi <= end) {
+          const fraction = (dpi - start) / (end - start);
+          return Math.round((i + fraction) * 1000) / 10;
+        }
+      }
+      return 600;
+    }
+
+    function updateSliderTrackFill(sliderEl, percent, color) {
+      if (!sliderEl) return;
+      sliderEl.style.setProperty('--slider-percent', `${percent}%`);
+      if (color) {
+        sliderEl.style.setProperty('--slider-color', color);
+      }
+    }
+
+    function updateDpiTrackFill() {
+      const pct = ((Number(dpiSlider.value) / 600) * 100).toFixed(2);
+      const color = dpiPresets[currentStageIndex]?.color || '#007AFF';
+      updateSliderTrackFill(dpiSlider, pct, color);
+    }
+
+    function updateDebounceTrackFill() {
+      const pct = ((Number(debounceSlider.value) / 30) * 100).toFixed(2);
+      updateSliderTrackFill(debounceSlider, pct, '#007AFF');
+    }
+
+    function updateBrightnessTrackFill() {
+      const pct = ((Number(brightnessSlider.value) / 2) * 100).toFixed(2);
+      updateSliderTrackFill(brightnessSlider, pct, '#FF9500');
+    }
+
+    function syncDpiDisplay(dpi) {
+      dpiSlider.value = dpiToSliderPos(dpi);
+      dpiNumberInput.value = dpi;
+      activeDpiLabel.textContent = `${dpi.toLocaleString()} DPI`;
+      updateDpiTrackFill();
+    }
+
+    // DOM Elements
+    const connectBtn = document.getElementById('connectDeviceBtn');
+    const connectBtnText = document.getElementById('connectBtnText');
+    const headerBadge = document.getElementById('headerConnectionBadge');
+    const footerConnectionState = document.getElementById('footerConnectionState');
+    const dpiStageGrid = document.getElementById('dpiStageGrid');
+    const dpiSlider = document.getElementById('dpiSlider');
+    const dpiNumberInput = document.getElementById('dpiNumberInput');
+    const activeDpiLabel = document.getElementById('activeDpiLabel');
+    const stageSliderTitle = document.getElementById('stageSliderTitle');
+    const activeHzBadge = document.getElementById('activeHzBadge');
+    const debounceSlider = document.getElementById('debounceSlider');
+    const debounceLabel = document.getElementById('debounceLabel');
+    const sleepSlider = document.getElementById('sleepSlider');
+    const sleepTimeBadge = document.getElementById('sleepTimeBadge');
+    const rgbEffectSelect = document.getElementById('rgbEffectSelect');
+    const dpiLedEffectSelect = document.getElementById('dpiLedEffectSelect');
+    const brightnessSlider = document.getElementById('brightnessSlider');
+    const brightnessLabel = document.getElementById('brightnessLabel');
+    const packetLogBox = document.getElementById('packetLogBox');
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const statusToast = document.getElementById('statusToast');
+    const toastMessage = document.getElementById('toastMessage');
+    const toggleMockBtn = document.getElementById('toggleMockBtn');
+    const syncStatusDot = document.getElementById('syncStatusDot');
+
+    function updateSleepTrackFill() {
+      if (!sleepSlider) return;
+      const pct = ((Number(sleepSlider.value) / 500) * 100).toFixed(2);
+      updateSliderTrackFill(sleepSlider, pct, '#007AFF');
+    }
+
+    function syncSleepDisplay(sec) {
+      currentSleepSeconds = sec;
+      if (sleepSlider) sleepSlider.value = sleepSecondsToSliderPos(sec);
+      if (sleepTimeBadge) sleepTimeBadge.textContent = formatSleepSeconds(sec);
+      updateSleepTrackFill();
+
+      document.querySelectorAll('.sleep-preset-btn').forEach(btn => {
+        const s = parseInt(btn.getAttribute('data-sec'), 10);
+        const isActive = s === sec;
+        btn.className = `sleep-preset-btn py-1 rounded-lg text-center transition ${
+          isActive
+            ? 'bg-white dark:bg-white/20 shadow-sm text-apple-blue dark:text-white font-semibold ring-1 ring-apple-blue/50'
+            : 'hover:text-black dark:hover:text-white text-apple-gray-600 dark:text-apple-gray-300'
+        }`;
+      });
+    }
+
+    async function updateSleepSeconds(sec) {
+      syncSleepDisplay(sec);
+      try {
+        await controller.setSleepTime(sec);
+        logPacket('SET_FEATURE', controller.reportId, [0x09, 0x02, sec & 0xff, (sec >> 8) & 0xff], `Set Dormancy Timeout: ${sec}s`);
+        showToast(`Dormancy timeout updated to ${formatSleepSeconds(sec)} (Cmd 0x09/0x02)`, 'success');
+      } catch (err) {
+        console.error('Failed to set sleep time:', err);
+      }
+    }
+
+    // --- Button Mapping & Mouse Pin Interactivity ---
+    const unsavedChangesBadge = document.getElementById('unsavedChangesBadge');
+    const discardButtonsBtn = document.getElementById('discardButtonsBtn');
+    const applyButtonsBtn = document.getElementById('applyButtonsBtn');
+    const applyButtonsBtnText = document.getElementById('applyButtonsBtnText');
+    const cardApplyButtonsBtn = document.getElementById('cardApplyButtonsBtn');
+    const mappingStatusText = document.getElementById('mappingStatusText');
+
+    function updateApplyButtonsState() {
+      const hasChanges = Object.keys(draftButtonMappings).some(
+        k => draftButtonMappings[k] !== savedButtonMappings[k]
+      );
+
+      if (hasChanges) {
+        if (unsavedChangesBadge) unsavedChangesBadge.classList.remove('hidden');
+        if (discardButtonsBtn) {
+          discardButtonsBtn.classList.remove('hidden');
+          discardButtonsBtn.classList.add('flex');
+        }
+        [applyButtonsBtn, cardApplyButtonsBtn].forEach(btn => {
+          if (!btn) return;
+          btn.removeAttribute('disabled');
+          btn.className = 'flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-apple-blue hover:bg-blue-600 active:scale-[0.98] transition shadow-sm ring-2 ring-apple-blue/30 cursor-pointer';
+        });
+        if (mappingStatusText) {
+          mappingStatusText.textContent = 'Unsaved changes pending — click Apply to upload to mouse.';
+          mappingStatusText.className = 'text-amber-500 font-medium';
+        }
+      } else {
+        if (unsavedChangesBadge) unsavedChangesBadge.classList.add('hidden');
+        if (discardButtonsBtn) {
+          discardButtonsBtn.classList.add('hidden');
+          discardButtonsBtn.classList.remove('flex');
+        }
+        [applyButtonsBtn, cardApplyButtonsBtn].forEach(btn => {
+          if (!btn) return;
+          btn.setAttribute('disabled', 'true');
+          btn.className = 'flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-apple-blue opacity-50 cursor-not-allowed hover:bg-blue-600 active:scale-[0.98] transition shadow-sm';
+        });
+        if (mappingStatusText) {
+          mappingStatusText.textContent = 'All mappings synchronized with mouse hardware.';
+          mappingStatusText.className = 'text-apple-gray-400';
+        }
+      }
+
+      // Update Pin Tooltips on the visualizer mouse image
+      buttonMetadata.forEach(bm => {
+        const pin = document.querySelector(`.mouse-pin[data-btn="${bm.id}"]`);
+        if (pin) {
+          const act = draftButtonMappings[bm.id] ?? ButtonAction.LeftClick;
+          const actLabel = ButtonActionLabels[act] || `Action 0x${act.toString(16)}`;
+          const tip = pin.querySelector('.pin-tooltip');
+          if (tip) tip.textContent = actLabel;
+        }
+      });
+    }
+
+    function renderButtonMappings() {
+      const container = document.getElementById('buttonMappingList');
+      if (!container) return;
+      container.innerHTML = '';
+
+      buttonMetadata.forEach(bm => {
+        const row = document.createElement('div');
+        const isModified = draftButtonMappings[bm.id] !== savedButtonMappings[bm.id];
+        row.className = `button-mapping-row flex items-center justify-between p-2.5 rounded-xl border transition ${
+          isModified
+            ? 'border-apple-blue/40 bg-apple-blue/[0.04]'
+            : 'border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/[0.04] dark:hover:bg-white/[0.06]'
+        }`;
+        row.setAttribute('data-btn-row', bm.id);
+
+        const currentAction = draftButtonMappings[bm.id] ?? ButtonAction.LeftClick;
+
+        const actionGroups = [
+          {
+            label: 'Mouse Functions',
+            actions: [
+              ButtonAction.LeftClick,
+              ButtonAction.RightClick,
+              ButtonAction.MiddleClick,
+              ButtonAction.Forward,
+              ButtonAction.Backward,
+              ButtonAction.DoubleClick,
+              ButtonAction.FireKey,
+            ]
+          },
+          {
+            label: 'DPI Controls',
+            actions: [
+              ButtonAction.DpiLoop,
+              ButtonAction.DpiPlus,
+              ButtonAction.DpiMinus,
+            ]
+          },
+          {
+            label: 'Media Controls',
+            actions: [
+              ButtonAction.PlayPause,
+              ButtonAction.Stop,
+              ButtonAction.NextTrack,
+              ButtonAction.PrevTrack,
+              ButtonAction.VolumeUp,
+              ButtonAction.VolumeDown,
+              ButtonAction.Mute,
+            ]
+          },
+          {
+            label: 'Windows & Productivity',
+            actions: [
+              ButtonAction.Calculator,
+              ButtonAction.MyComputer,
+              ButtonAction.BrowserSearch,
+              ButtonAction.BrowserHome,
+              ButtonAction.BrowserBack,
+              ButtonAction.BrowserForward,
+              ButtonAction.BrowserStop,
+              ButtonAction.BrowserRefresh,
+              ButtonAction.BrowserFavorites,
+              ButtonAction.MediaPlayer,
+              ButtonAction.Email,
+            ]
+          },
+          {
+            label: 'Special Functions',
+            actions: [
+              ButtonAction.Disabled,
+            ]
+          }
+        ];
+
+        let optionsHtml = '';
+        actionGroups.forEach(grp => {
+          optionsHtml += `<optgroup label="${grp.label}">`;
+          grp.actions.forEach(actVal => {
+            const label = ButtonActionLabels[actVal] || `Action 0x${actVal.toString(16).toUpperCase()}`;
+            const isSelected = actVal === currentAction;
+            optionsHtml += `<option value="${actVal}" ${isSelected ? 'selected' : ''}>${label}</option>`;
+          });
+          optionsHtml += `</optgroup>`;
+        });
+
+        row.innerHTML = `
+          <div class="flex items-center space-x-3">
+            <span class="w-6 h-6 rounded-full ${
+              isModified ? 'bg-apple-blue text-white' : 'bg-apple-blue/10 dark:bg-apple-blue/20 text-apple-blue'
+            } font-bold text-xs flex items-center justify-center border border-apple-blue/30">${bm.id}</span>
+            <div>
+              <div class="flex items-center space-x-1.5">
+                <span class="text-xs font-semibold text-apple-gray-700 dark:text-apple-gray-200">${bm.name}</span>
+                ${isModified ? '<span class="text-[9px] font-semibold text-apple-blue bg-apple-blue/10 dark:bg-apple-blue/20 px-1.5 py-0.5 rounded">Pending Apply</span>' : ''}
+              </div>
+              <div class="text-[11px] text-apple-gray-400">${bm.role}</div>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <select class="btn-action-select text-xs font-medium px-2.5 py-1.5 rounded-lg bg-white dark:bg-apple-gray-800 border ${
+              isModified ? 'border-apple-blue ring-1 ring-apple-blue/40' : 'border-black/10 dark:border-white/10'
+            } shadow-sm focus:outline-none focus:ring-2 focus:ring-apple-blue cursor-pointer min-w-[210px]" data-btn-id="${bm.id}">
+              ${optionsHtml}
+            </select>
+          </div>
+        `;
+
+        row.addEventListener('mouseenter', () => highlightPin(bm.id, true));
+        row.addEventListener('mouseleave', () => highlightPin(bm.id, false));
+
+        container.appendChild(row);
+      });
+
+      // Bind change listeners to select dropdowns - only updates draft state!
+      container.querySelectorAll('.btn-action-select').forEach(sel => {
+        sel.addEventListener('change', (e) => {
+          const btnId = parseInt(e.target.getAttribute('data-btn-id'), 10);
+          const newAction = parseInt(e.target.value, 10);
+          draftButtonMappings[btnId] = newAction;
+          renderButtonMappings();
+        });
+      });
+
+      updateApplyButtonsState();
+    }
+
+    function highlightPin(btnId, isActive) {
+      const pin = document.querySelector(`.mouse-pin[data-btn="${btnId}"]`);
+      const row = document.querySelector(`[data-btn-row="${btnId}"]`);
+      if (pin) {
+        if (isActive) {
+          pin.classList.add('scale-125', 'bg-apple-blue', 'text-white', 'ring-4', 'ring-apple-blue/30');
+        } else {
+          pin.classList.remove('scale-125', 'bg-apple-blue', 'text-white', 'ring-4', 'ring-apple-blue/30');
+        }
+      }
+      if (row) {
+        if (isActive) {
+          row.classList.add('border-apple-blue/50', 'bg-apple-blue/5');
+        } else {
+          row.classList.remove('border-apple-blue/50', 'bg-apple-blue/5');
+        }
+      }
+    }
+
+    async function applyAllButtonMappings() {
+      // 1. Validation: At least one button must be Left click
+      const hasLeftClick = Object.values(draftButtonMappings).some(a => a === ButtonAction.LeftClick);
+      if (!hasLeftClick) {
+        showToast("At least one button must be configured as 'Left click'!", 'error');
+        return;
+      }
+
+      // 2. Set button UI into loading state
+      if (applyButtonsBtnText) applyButtonsBtnText.textContent = 'Applying...';
+      if (cardApplyButtonsBtn) cardApplyButtonsBtn.textContent = 'Applying...';
+      [applyButtonsBtn, cardApplyButtonsBtn].forEach(b => b?.setAttribute('disabled', 'true'));
+
+      try {
+        let changeCount = 0;
+        for (let b = 1; b <= 6; b++) {
+          if (draftButtonMappings[b] !== savedButtonMappings[b]) {
+            try {
+              await controller.setButtonMapping(b, draftButtonMappings[b]);
+              const act = draftButtonMappings[b];
+              const hwIdx = AulaSC900ProController.buttonToHwIndex ? AulaSC900ProController.buttonToHwIndex(b) : (b === 5 ? 3 : (b === 4 ? 4 : b - 1));
+              const actionLabel = ButtonActionLabels[act] || `Action 0x${act.toString(16).toUpperCase()}`;
+              logPacket('SET_FEATURE', controller.reportId, [0x06, hwIdx, act & 0xff, (act >>> 8) & 0xff, (act >>> 16) & 0xff, (act >>> 24) & 0xff], `Button ${b} (HW ${hwIdx}) -> ${actionLabel}`);
+              changeCount++;
+            } catch (bErr) {
+              console.warn(`Button ${b} mapping update warning:`, bErr);
+              if (b !== 6) throw bErr;
+            }
+            await new Promise(r => setTimeout(r, 40));
+          }
+        }
+
+        savedButtonMappings = { ...draftButtonMappings };
+        try {
+          localStorage.setItem(STORAGE_KEY_BUTTONS, JSON.stringify(savedButtonMappings));
+        } catch (e) {
+          console.warn('Failed to save button mappings to localStorage:', e);
+        }
+        showToast(
+          changeCount > 0
+            ? `Successfully applied ${changeCount} button mapping change(s) (Cmd 0x06)`
+            : 'All button mappings are up to date.',
+          'success'
+        );
+      } catch (err) {
+        console.error('Failed to apply button mappings:', err);
+        showToast(`Failed to apply button mappings: ${err.message}`, 'error');
+      } finally {
+        if (applyButtonsBtnText) applyButtonsBtnText.textContent = 'Apply';
+        if (cardApplyButtonsBtn) cardApplyButtonsBtn.textContent = 'Apply';
+        renderButtonMappings();
+      }
+    }
+
+    function discardButtonChanges() {
+      draftButtonMappings = { ...savedButtonMappings };
+      renderButtonMappings();
+      showToast('Pending button changes discarded.', 'info');
+    }
+
+    function resetAllButtons() {
+      draftButtonMappings = { ...DEFAULT_BUTTON_MAPPINGS };
+      renderButtonMappings();
+      showToast("Default layout staged. Click 'Apply' to upload to mouse.", 'info');
+    }
+
+    // Default to simulation enabled initially so UI is fully functional
+    controller.enableSimulation();
+
+    // --- Packet Logger ---
+    function logPacket(direction, reportId, dataArray, note = '') {
+      const time = new Date().toLocaleTimeString('en-US', { hour12: false });
+      const hex = Array.from(dataArray)
+        .slice(0, 16)
+        .map(b => b.toString(16).padStart(2, '0').toUpperCase())
+        .join(' ');
+      
+      const line = document.createElement('div');
+      line.className = 'font-mono py-0.5';
+      line.innerHTML = `<span class="text-apple-gray-500">[${time}]</span> <span class="${direction === 'SET_FEATURE' ? 'text-apple-teal' : 'text-apple-yellow'} font-semibold">${direction} [0x${reportId.toString(16).padStart(2,'0')}]</span>: ${hex}... <span class="text-apple-gray-400">(${note})</span>`;
+      
+      packetLogBox.appendChild(line);
+      packetLogBox.scrollTop = packetLogBox.scrollHeight;
+    }
+
+    // Wrap controller send to log packets directly to inspector
+    const originalSend = controller.sendFeatureReport;
+    controller.sendFeatureReport = async function(data) {
+      logPacket('SET_FEATURE', this.reportId, data, this.isSimulated ? 'Simulated' : 'Hardware');
+      return await originalSend.call(this, data);
+    };
+
+    // --- Connection Handling ---
+    async function toggleConnection(allowAny = false) {
+      if (controller.isConnected && !controller.isSimulation) {
+        await controller.disconnect();
+        controller.enableSimulation();
+        updateConnectionUI();
+        showToast('Disconnected from hardware. Reverted to Interactive Simulation.', 'info');
+        return;
+      }
+
+      if (!('hid' in navigator)) {
+        showToast('WebHID is not supported on this browser. Please use Chrome, Edge, or Opera. Running in Interactive Simulation mode.', 'warning');
+        controller.enableSimulation();
+        updateConnectionUI();
+        return;
+      }
+
+      try {
+        const success = await controller.requestDevice(allowAny);
+        if (success) {
+          updateConnectionUI();
+          showToast(`Successfully paired with ${controller.deviceName} via WebHID.`, 'success');
+          await syncAllFromHardware(true);
+        } else {
+          showToast('Device request was cancelled. Running in Simulation mode. (Try "Show All Devices" if your mouse is not listed)', 'info');
+        }
+      } catch (err) {
+        console.warn('Pairing failed, engaging interactive simulation:', err);
+        controller.enableSimulation();
+        updateConnectionUI();
+        showToast(`Hardware not detected. Running in Simulation mode: ${err.message}`, 'info');
+      }
+    }
+
+    function updateConnectionUI() {
+      const isConnected = controller.isConnected;
+      const isSim = controller.isSimulation;
+
+      const vidSpan = document.getElementById('footerVid');
+      const pidSpan = document.getElementById('footerPid');
+
+      if (isConnected && !isSim) {
+        headerBadge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20';
+        headerBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Connected';
+        connectBtn.className = 'flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-red-500 hover:bg-red-600 active:scale-[0.98] transition shadow-sm';
+        connectBtnText.textContent = 'Disconnect';
+        footerConnectionState.textContent = `Device: ${controller.deviceName}`;
+        syncStatusDot.className = 'w-2 h-2 rounded-full bg-apple-green';
+
+        if (vidSpan && controller.vendorId) {
+          vidSpan.textContent = '0x' + controller.vendorId.toString(16).toUpperCase().padStart(4, '0');
+        }
+        if (pidSpan && controller.productId) {
+          pidSpan.textContent = '0x' + controller.productId.toString(16).toUpperCase().padStart(4, '0');
+        }
+        if (typeof isRealtimeActive !== 'undefined' && isRealtimeActive) {
+          controller.startRealtimeMonitor(3000);
+        }
+      } else {
+        controller.stopRealtimeMonitor();
+        headerBadge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20';
+        headerBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Simulation Mode';
+        connectBtn.className = 'flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-apple-blue hover:bg-blue-600 active:scale-[0.98] transition shadow-sm';
+        connectBtnText.textContent = 'Connect Mouse';
+        footerConnectionState.textContent = 'Mode: Interactive Simulation (Demo)';
+        syncStatusDot.className = 'w-2 h-2 rounded-full bg-apple-orange animate-pulse';
+
+        if (vidSpan) vidSpan.textContent = '0x093A (PixArt)';
+        if (pidSpan) pidSpan.textContent = '0x522C (8K Dongle)';
+      }
+    }
+
+    // Hardware Protocol Byte Mapping (Confirmed on Physical PixArt 8K Hardware)
+    const pollingRatePresets = [
+      { hz: 125,  byte: 0x03, label: '125 Hz (8ms)', short: '125' },
+      { hz: 250,  byte: 0x02, label: '250 Hz (4ms)', short: '250' },
+      { hz: 500,  byte: 0x01, label: '500 Hz (2ms)', short: '500' },
+      { hz: 1000, byte: 0x00, label: '1,000 Hz (1ms)', short: '1K' },
+      { hz: 2000, byte: 0x06, label: '2,000 Hz (0.5ms)', short: '2K' },
+      { hz: 4000, byte: 0x05, label: '4,000 Hz (0.25ms)', short: '4K' },
+      { hz: 8000, byte: 0x04, label: '8,000 Hz PRO (0.125ms)', short: '8K PRO' },
+    ];
+
+    function renderPollingRates() {
+      const container = document.getElementById('pollingGrid');
+      if (!container) return;
+      container.innerHTML = '';
+      pollingRatePresets.forEach((p) => {
+        const btn = document.createElement('button');
+        const isActive = p.byte === currentPollingRate;
+        btn.className = `py-1.5 rounded-lg text-center transition-all ${
+          isActive
+            ? 'bg-white dark:bg-white/20 shadow-sm text-apple-blue dark:text-white font-semibold ring-1 ring-apple-blue/50 scale-[1.02]'
+            : 'hover:text-black dark:hover:text-white text-apple-gray-600 dark:text-apple-gray-300'
+        }`;
+        btn.textContent = p.short;
+        btn.onclick = () => selectPollingRate(p.hz);
+        container.appendChild(btn);
+      });
+    }
+
+    async function selectPollingRate(hz) {
+      const preset = pollingRatePresets.find(p => p.hz === hz);
+      if (!preset) return;
+      currentPollingRate = preset.byte;
+      activeHzBadge.textContent = preset.label;
+      renderPollingRates();
+
+      try {
+        await controller.setPollingRate(preset.byte);
+        showToast(`Polling Rate set to ${preset.label} (Cmd 0x0D -> 0x${preset.byte.toString(16).padStart(2, '0')})`, 'success');
+      } catch (err) {
+        console.error('Failed to set polling rate:', err);
+      }
+    }
+
+    async function syncAllFromHardware(notify = false) {
+      if (!controller.isConnected || controller.isSimulation) {
+        if (notify) showToast('Please connect to your AULA SC900 Pro hardware first.', 'warning');
+        return;
+      }
+
+      const syncIcon = document.getElementById('syncIconSvg');
+      if (syncIcon) syncIcon.classList.add('animate-spin');
+
+      try {
+        // 1. Sync Polling Rate & Debounce Filter FIRST (Cmd 0x8D & Cmd 0x89/0x01)
+        const { rate, debounceMs } = await controller.getPollingRate();
+        const matched = pollingRatePresets.find(p => p.byte === rate);
+        if (matched) {
+          currentPollingRate = matched.byte;
+          activeHzBadge.textContent = matched.label;
+          renderPollingRates();
+        }
+
+        if (typeof debounceMs === 'number' && debounceSlider) {
+          currentDebounce = debounceMs;
+          debounceSlider.value = debounceMs;
+          debounceLabel.textContent = `${debounceMs} ms ${debounceMs == 8 ? '(Recommended)' : ''}`;
+        }
+        logPacket('GET_FEATURE', controller.reportId, [0x8d, rate], `Active Rate: ${matched ? matched.label : rate}`);
+        logPacket('GET_FEATURE', controller.reportId, [0x89, 0x01, debounceMs], `Debounce Filter: ${debounceMs}ms`);
+
+        await new Promise((r) => setTimeout(r, 40));
+
+        // 2. Sync Active DPI Stage, LED Effect, Brightness, Speed (Cmd 0x8B)
+        const stageInfo = await controller.getActiveDpiStage();
+        if (typeof stageInfo.activeStageIndex === 'number' && stageInfo.activeStageIndex >= 0 && stageInfo.activeStageIndex <= 5) {
+          currentStageIndex = stageInfo.activeStageIndex;
+        }
+        if (typeof stageInfo.dpiLedEffect === 'number' && dpiLedEffectSelect) {
+          currentDpiLedEffect = stageInfo.dpiLedEffect;
+          dpiLedEffectSelect.value = stageInfo.dpiLedEffect;
+        }
+        if (typeof stageInfo.brightness === 'number' && brightnessSlider) {
+          currentBrightness = stageInfo.brightness;
+          brightnessSlider.value = stageInfo.brightness;
+          const labels = ['Level 1 (Low)', 'Level 2 (Normal)', 'Level 3 (High)'];
+          if (brightnessLabel) brightnessLabel.textContent = labels[stageInfo.brightness] || `Level ${stageInfo.brightness + 1}`;
+        }
+
+        await new Promise((r) => setTimeout(r, 40));
+
+        // 3. Sync all 6 DPI Stage Values from hardware (Cmd 0x8C for stages 0..5)
+        const hwDpis = await controller.getAllDpiStages();
+        hwDpis.forEach((val, idx) => {
+          if (val && idx < dpiPresets.length) {
+            dpiPresets[idx].dpi = val;
+          }
+        });
+
+        // Update active DPI slider and displays
+        const activeProfile = dpiPresets[currentStageIndex];
+        if (activeProfile) {
+          syncDpiDisplay(activeProfile.dpi);
+          stageSliderTitle.textContent = `Resolution Fine-Tuning (Stage ${activeProfile.stage})`;
+        }
+        updateDebounceTrackFill();
+        updateBrightnessTrackFill();
+        renderDPIStages();
+        logPacket('GET_FEATURE', controller.reportId, [0x8b, stageInfo.totalStages, stageInfo.activeStageIndex, stageInfo.dpiLedEffect], `Hardware Active DPI: Stage ${currentStageIndex + 1} (${activeProfile?.dpi} DPI)`);
+
+        // 4. Sync Battery & Charging State (Cmd 0x8F)
+        await pollBattery();
+
+        // 5. Sync Dormancy / Standby Timeout (Cmd 0x89 0x02)
+        try {
+          const sleepSec = await controller.getSleepTime();
+          if (sleepSec) {
+            syncSleepDisplay(sleepSec);
+          }
+        } catch (e) {
+          console.warn('Sync sleep timeout:', e);
+        }
+
+        // 6. Sync Button Mappings from Hardware (Cmd 0x86)
+        try {
+          const hwMappings = await controller.getAllButtonMappings();
+          if (hwMappings && Object.keys(hwMappings).length > 0) {
+            savedButtonMappings = { ...hwMappings };
+            draftButtonMappings = { ...hwMappings };
+            renderButtonMappings();
+          }
+        } catch (bErr) {
+          console.warn('Sync button mappings from hardware:', bErr);
+        }
+
+        if (notify) {
+          showToast(`Successfully synced hardware settings: Stage ${currentStageIndex + 1} (${activeProfile?.dpi} DPI), ${matched ? matched.label : ''}, Debounce ${debounceMs}ms, Dormancy ${formatSleepSeconds(currentSleepSeconds)}`, 'success');
+        }
+      } catch (err) {
+        console.error('Error syncing settings from hardware:', err);
+        if (notify) showToast(`Hardware sync encountered an issue: ${err.message}`, 'error');
+      } finally {
+        if (syncIcon) syncIcon.classList.remove('animate-spin');
+      }
+    }
+
+    async function pollBattery() {
+      if (!controller.isConnected) return;
+      try {
+        const batt = await controller.getBatteryStatus();
+        document.getElementById('batteryPercentage').textContent = `${batt.percentage}%`;
+        document.getElementById('batteryFill').style.width = `${batt.percentage}%`;
+        const chIcon = document.getElementById('chargingIcon');
+        if (batt.isCharging) {
+          chIcon.classList.remove('hidden');
+        } else {
+          chIcon.classList.add('hidden');
+        }
+        logPacket('GET_BATTERY', controller.reportId, [0x8f, batt.percentage, batt.isCharging ? 1 : 0], `Battery: ${batt.percentage}%, Charging: ${batt.isCharging}`);
+      } catch (e) {
+        console.warn('Battery poll:', e);
+      }
+    }
+
+    function showToast(msg, type = 'info') {
+      toastMessage.innerHTML = msg;
+      statusToast.classList.remove('hidden');
+    }
+
+    // --- Render DPI Stages ---
+    function renderDPIStages() {
+      dpiStageGrid.innerHTML = '';
+      dpiPresets.forEach((p, idx) => {
+        const btn = document.createElement('button');
+        const isActive = idx === currentStageIndex;
+        btn.className = `p-2.5 rounded-xl border flex flex-col items-center justify-center space-y-1 transition-all ${
+          isActive
+            ? 'bg-apple-blue/10 dark:bg-apple-blue/20 border-apple-blue text-apple-blue font-bold shadow-sm ring-1 ring-apple-blue'
+            : 'bg-black/5 dark:bg-white/5 border-transparent text-apple-gray-600 dark:text-apple-gray-300 hover:bg-black/10 dark:hover:bg-white/10'
+        }`;
+        
+        btn.innerHTML = `
+          <div class="flex items-center space-x-1.5">
+            <span class="w-2 h-2 rounded-full" style="background-color: ${p.color}"></span>
+            <span class="text-[10px] uppercase font-semibold">Stage ${p.stage}</span>
+          </div>
+          <span class="text-xs font-mono tabular-nums">${p.dpi.toLocaleString()}</span>
+        `;
+
+        btn.onclick = () => selectDPIStage(idx);
+        dpiStageGrid.appendChild(btn);
+      });
+    }
+
+    async function selectDPIStage(idx) {
+      currentStageIndex = idx;
+      const profile = dpiPresets[idx];
+      syncDpiDisplay(profile.dpi);
+      stageSliderTitle.textContent = `Resolution Fine-Tuning (Stage ${profile.stage})`;
+      renderDPIStages();
+
+      try {
+        // Switch mouse active stage on hardware (Command 0x08 / 0x0B)
+        await controller.setActiveDpiStage(idx);
+        showToast(`DPI switched to Stage ${profile.stage}: ${profile.dpi.toLocaleString()} DPI`, 'success');
+      } catch (err) {
+        console.error('Failed to set active DPI stage:', err);
+      }
+    }
+
+    async function updateDpiValue(newDpi) {
+      const profile = dpiPresets[currentStageIndex];
+      profile.dpi = newDpi;
+      syncDpiDisplay(newDpi);
+      renderDPIStages();
+
+      try {
+        // Send Command 0x0C to set DPI profile for this stage
+        await controller.setDpiStage(currentStageIndex, newDpi);
+        await new Promise((r) => setTimeout(r, 40));
+        // Ensure active stage is current
+        await controller.setActiveDpiStage(currentStageIndex);
+        showToast(`Stage ${profile.stage} calibrated to ${newDpi.toLocaleString()} DPI`, 'success');
+      } catch (err) {
+        console.error('Failed to update stage DPI:', err);
+      }
+    }
+
+    // Connect buttons
+    connectBtn.addEventListener('click', () => toggleConnection(false));
+    document.getElementById('showAllDevicesBtn')?.addEventListener('click', () => toggleConnection(true));
+
+    toggleMockBtn.addEventListener('click', () => {
+      if (controller.isSimulation) {
+        controller.disconnect();
+        updateConnectionUI();
+        showToast('Simulation mode disabled. Ready for WebHID hardware pairing.', 'info');
+      } else {
+        controller.enableSimulation();
+        updateConnectionUI();
+        showToast('Simulation mode enabled.', 'info');
+      }
+    });
+
+    document.getElementById('dismissToastBtn').onclick = () => {
+      statusToast.classList.add('hidden');
+    };
+
+    // DPI Slider & Numeric Input Sync with non-linear scale
+    dpiSlider.addEventListener('input', (e) => {
+      const val = sliderPosToDpi(e.target.value);
+      dpiNumberInput.value = val;
+      activeDpiLabel.textContent = `${val.toLocaleString()} DPI`;
+      dpiPresets[currentStageIndex].dpi = val;
+      updateDpiTrackFill();
+      renderDPIStages();
+    });
+
+    dpiSlider.addEventListener('change', (e) => {
+      const val = sliderPosToDpi(e.target.value);
+      syncDpiDisplay(val);
+      updateDpiValue(val);
+    });
+
+    dpiNumberInput.addEventListener('change', (e) => {
+      let val = Math.min(26000, Math.max(50, parseInt(e.target.value, 10) || 1600));
+      val = Math.round(val / 50) * 50;
+      syncDpiDisplay(val);
+      updateDpiValue(val);
+    });
+
+    // Quick jump clicks on scale ticks
+    document.querySelectorAll('.dpi-scale-step').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const dpi = parseInt(btn.getAttribute('data-dpi'), 10);
+        syncDpiDisplay(dpi);
+        updateDpiValue(dpi);
+      });
+    });
+
+    document.querySelectorAll('.debounce-scale-step').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const ms = parseInt(btn.getAttribute('data-ms'), 10);
+        debounceSlider.value = ms;
+        debounceLabel.textContent = `${ms} ms ${ms == 8 ? '(Recommended)' : ''}`;
+        updateDebounceTrackFill();
+        currentDebounce = ms;
+        controller.setDebounceTime(ms).catch(console.error);
+        showToast(`Debounce filter set to ${ms} ms (Cmd 0x09/0x01)`, 'success');
+      });
+    });
+
+    document.querySelectorAll('.bright-scale-step').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const val = parseInt(btn.getAttribute('data-val'), 10);
+        brightnessSlider.value = val;
+        currentBrightness = val;
+        const labels = ['Level 1 (Low)', 'Level 2 (Normal)', 'Level 3 (High)'];
+        brightnessLabel.textContent = labels[val];
+        updateBrightnessTrackFill();
+        controller.setLighting({
+          activeDpiStage: currentStageIndex,
+          dpiLedEffect: currentDpiLedEffect,
+          brightness: val
+        }).catch(console.error);
+      });
+    });
+
+    // Debounce Slider
+    debounceSlider.addEventListener('input', (e) => {
+      const val = e.target.value;
+      debounceLabel.textContent = `${val} ms ${val == 8 ? '(Recommended)' : ''}`;
+      updateDebounceTrackFill();
+    });
+    debounceSlider.addEventListener('change', async (e) => {
+      const ms = parseInt(e.target.value, 10);
+      currentDebounce = ms;
+      updateDebounceTrackFill();
+      try {
+        await controller.setDebounceTime(ms);
+        showToast(`Debounce filter set to ${ms} ms (Cmd 0x09/0x01)`, 'success');
+      } catch (err) {
+        console.error('Failed to set debounce:', err);
+      }
+    });
+
+    // RGB Lighting Mode Selector
+    rgbEffectSelect.addEventListener('change', async (e) => {
+      const mode = parseInt(e.target.value, 10);
+      currentLightEffect = mode;
+      try {
+        await controller.setLighting({
+          activeDpiStage: currentStageIndex,
+          dpiLedEffect: currentDpiLedEffect,
+          brightness: currentBrightness
+        });
+        showToast(`RGB Mode set to ${e.target.options[e.target.selectedIndex].text} (Cmd 0x0B)`, 'success');
+      } catch (err) {
+        console.error('Failed to set lighting:', err);
+      }
+    });
+
+    // DPI LED Effect Selector
+    dpiLedEffectSelect.addEventListener('change', async (e) => {
+      const effect = parseInt(e.target.value, 10);
+      currentDpiLedEffect = effect;
+      try {
+        await controller.setLighting({
+          activeDpiStage: currentStageIndex,
+          dpiLedEffect: effect,
+          brightness: currentBrightness
+        });
+      } catch (err) {
+        console.error('Failed to set DPI LED effect:', err);
+      }
+    });
+
+    // Brightness Slider
+    brightnessSlider.addEventListener('input', (e) => {
+      const val = parseInt(e.target.value, 10);
+      currentBrightness = val;
+      const labels = ['Level 1 (Low)', 'Level 2 (Normal)', 'Level 3 (High)'];
+      brightnessLabel.textContent = labels[val];
+      updateBrightnessTrackFill();
+    });
+    brightnessSlider.addEventListener('change', async () => {
+      updateBrightnessTrackFill();
+      try {
+        await controller.setLighting({
+          activeDpiStage: currentStageIndex,
+          dpiLedEffect: currentDpiLedEffect,
+          brightness: currentBrightness
+        });
+      } catch (err) {
+        console.error('Failed to set brightness:', err);
+      }
+    });
+
+    // Mouse Pins and Button Mapping Event Listeners
+    document.querySelectorAll('.mouse-pin').forEach(pin => {
+      const btnId = parseInt(pin.getAttribute('data-btn'), 10);
+      pin.addEventListener('mouseenter', () => highlightPin(btnId, true));
+      pin.addEventListener('mouseleave', () => highlightPin(btnId, false));
+      pin.addEventListener('click', () => {
+        highlightPin(btnId, true);
+        const row = document.querySelector(`[data-btn-row="${btnId}"] select`);
+        if (row) {
+          row.focus();
+        }
+      });
+    });
+
+    applyButtonsBtn?.addEventListener('click', applyAllButtonMappings);
+    cardApplyButtonsBtn?.addEventListener('click', applyAllButtonMappings);
+    discardButtonsBtn?.addEventListener('click', discardButtonChanges);
+    document.getElementById('resetButtonsBtn')?.addEventListener('click', resetAllButtons);
+
+    // Dormancy Slider & Presets
+    sleepSlider?.addEventListener('input', (e) => {
+      const sec = sliderPosToSleepSeconds(e.target.value);
+      if (sleepTimeBadge) sleepTimeBadge.textContent = formatSleepSeconds(sec);
+      updateSleepTrackFill();
+    });
+
+    sleepSlider?.addEventListener('change', async (e) => {
+      const sec = sliderPosToSleepSeconds(e.target.value);
+      await updateSleepSeconds(sec);
+    });
+
+    document.querySelectorAll('.sleep-preset-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const sec = parseInt(btn.getAttribute('data-sec'), 10);
+        await updateSleepSeconds(sec);
+      });
+    });
+
+    document.querySelectorAll('.sleep-scale-step').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const sec = parseInt(btn.getAttribute('data-sec'), 10);
+        await updateSleepSeconds(sec);
+      });
+    });
+
+    // Sidebar Navigation Tabs
+    const navButtons = document.querySelectorAll('.nav-tab');
+    navButtons.forEach(tab => {
+      tab.addEventListener('click', () => {
+        navButtons.forEach(b => {
+          b.className = 'nav-tab w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-xs font-medium text-apple-gray-600 dark:text-apple-gray-300 hover:bg-black/5 dark:hover:bg-white/5 transition';
+        });
+        tab.className = 'nav-tab active w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-xs font-medium text-apple-blue bg-apple-blue/10 dark:bg-apple-blue/20 transition';
+        
+        const targetId = tab.getAttribute('data-target');
+        const element = document.getElementById(targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Clear telemetry log
+    document.getElementById('clearLogBtn').addEventListener('click', () => {
+      packetLogBox.innerHTML = '<div class="text-apple-gray-500">// Packet trace log cleared.</div>';
+    });
+
+    // Theme Toggle (Light/Dark Mode)
+    themeToggleBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('sc900_theme', isDark ? 'dark' : 'light');
+    });
+
+    // Initialize System Defaults & Theme
+    const savedTheme = localStorage.getItem('sc900_theme');
+    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+
+    renderButtonMappings();
+    renderDPIStages();
+    renderPollingRates();
+    syncDpiDisplay(dpiPresets[currentStageIndex].dpi);
+    syncSleepDisplay(60);
+    updateDebounceTrackFill();
+    updateBrightnessTrackFill();
+    updateConnectionUI();
+
+    // --- Real-Time Telemetry & Background Sync ---
+    let isRealtimeActive = true;
+    const realtimeToggleBtn = document.getElementById('realtimeToggleBtn');
+    const realtimePulseDot = document.getElementById('realtimePulseDot');
+
+    controller.onRealtimeUpdate = (data) => {
+      // 1. Physical DPI stage switch detection
+      if (typeof data.activeStageIndex === 'number' && data.activeStageIndex !== currentStageIndex) {
+        currentStageIndex = data.activeStageIndex;
+        const profile = dpiPresets[currentStageIndex];
+        if (profile) {
+          syncDpiDisplay(profile.dpi);
+          stageSliderTitle.textContent = `Resolution Fine-Tuning (Stage ${profile.stage})`;
+          renderDPIStages();
+          logPacket('REALTIME', controller.reportId, [0x8b, 0x06, currentStageIndex], `Physical DPI button pressed -> Stage ${profile.stage} (${profile.dpi} DPI)`);
+        }
+      }
+
+      // 2. Battery & Charging state live update
+      if (data.battery) {
+        document.getElementById('batteryPercentage').textContent = `${data.battery.percentage}%`;
+        document.getElementById('batteryFill').style.width = `${data.battery.percentage}%`;
+        const chIcon = document.getElementById('chargingIcon');
+        if (data.battery.isCharging) {
+          chIcon.classList.remove('hidden');
+        } else {
+          chIcon.classList.add('hidden');
+        }
+      }
+
+      // 3. Polling Rate live update from hardware switch
+      if (typeof data.rate !== 'undefined' && data.rate !== currentPollingRate) {
+        const matched = pollingRatePresets.find(p => p.byte === data.rate);
+        if (matched) {
+          currentPollingRate = matched.byte;
+          activeHzBadge.textContent = matched.label;
+          renderPollingRates();
+          logPacket('REALTIME', controller.reportId, [0x8d, data.rate], `Hardware Polling Rate switch -> ${matched.label}`);
+        }
+      }
+    };
+
+    realtimeToggleBtn?.addEventListener('click', () => {
+      isRealtimeActive = !isRealtimeActive;
+      if (isRealtimeActive) {
+        realtimePulseDot.className = 'w-2 h-2 rounded-full bg-apple-green animate-pulse';
+        if (controller.isConnected && !controller.isSimulation) {
+          controller.startRealtimeMonitor(3000);
+        }
+        showToast('Real-time live telemetry monitor enabled.', 'success');
+      } else {
+        realtimePulseDot.className = 'w-2 h-2 rounded-full bg-apple-gray-400';
+        controller.stopRealtimeMonitor();
+        showToast('Real-time live monitor paused.', 'info');
+      }
+    });
+
+    // Optional WebSocket bridge
+    let wsClient = null;
+    function tryConnectWebSocket() {
+      try {
+        wsClient = new WebSocket('ws://localhost:8080');
+        wsClient.onopen = () => {
+          document.getElementById('footerConnectionState').textContent = 'Daemon: WebSocket (ws://localhost:8080)';
+          showToast('Connected to Local AULA WebSocket Daemon.', 'info');
+        };
+        wsClient.onmessage = (event) => {
+          try {
+            const msg = JSON.parse(event.data);
+            if (msg.type === 'TELEMETRY' && controller.onRealtimeUpdate) {
+              controller.onRealtimeUpdate(msg.data);
+            }
+          } catch (e) {}
+        };
+        wsClient.onerror = () => {
+          // Silent fallback to WebHID
+        };
+      } catch (e) {}
+    }
+    tryConnectWebSocket();
+
+    // Sync from Mouse Button
+    document.getElementById('syncFromMouseBtn')?.addEventListener('click', () => syncAllFromHardware(true));
+
+    // Auto-connect if already permitted by user in this browser
+    controller.autoConnect().then(async (connected) => {
+      if (connected) {
+        updateConnectionUI();
+        showToast(`Auto-connected to ${controller.deviceName}.`, 'success');
+        await syncAllFromHardware(false);
+      }
+    });
+
+    // Listen for USB plug/unplug events
+    if ('hid' in navigator) {
+      navigator.hid.addEventListener('connect', async (e) => {
+        const dev = e.device;
+        const matchesVid = AulaSC900ProController.FILTERS.some(f => f.vendorId === dev.vendorId);
+        if (matchesVid) {
+          const ok = await controller.connect(dev);
+          if (ok) {
+            updateConnectionUI();
+            showToast(`Mouse connected: ${controller.deviceName}`, 'success');
+            await syncAllFromHardware(false);
+          }
+        }
+      });
+
+      navigator.hid.addEventListener('disconnect', (e) => {
+        if (!controller.isSimulation) {
+          controller.disconnect();
+          controller.enableSimulation();
+          updateConnectionUI();
+          showToast('Mouse disconnected. Reverted to Simulation Mode.', 'info');
+        }
+      });
+    }
+
+    setInterval(async () => {
+      if (controller.isConnected && !controller.isSimulation) {
+        await pollBattery();
+      }
+    }, 15000);
+  </script>
+</body>
+</html>

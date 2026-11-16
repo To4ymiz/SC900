@@ -1,0 +1,21 @@
+{
+  "name": "aula-sc900pro-webhid",
+  "version": "1.0.0",
+  "description": "Apple-themed WebHID Controller for AULA SC900 Pro Gaming Mouse",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "daemon": "node server.js"
+  },
+  "devDependencies": {
+    "@types/w3c-web-hid": "^1.0.7",
+    "@types/ws": "^8.18.2",
+    "typescript": "^5.9.3",
+    "vite": "^6.4.1"
+  },
+  "dependencies": {
+    "ws": "^8.22.0"
+  }
+}
